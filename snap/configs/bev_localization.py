@@ -49,7 +49,7 @@ def get_config(args_str: None | str = None) -> config_dict.ConfigDict:
     estimator_query.scene_encoder.fusion.layers = (dim * 2, dim * 2, dim)
     config.model.bev_estimator_query = estimator_query
 
-  cities = defaults.DATA_SPLITS_CITIES['train2']
+  cities = defaults.DATA_SPLITS_CITIES['train']
   locations = ','.join(
       f'{c}-n14_streetside_sceneviewpair_20views_trekkerquery' for c in cities
   )

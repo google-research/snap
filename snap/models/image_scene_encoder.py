@@ -116,8 +116,6 @@ def interpolate_depth_score(
     depth_min_max: Tuple[float, float],
 ) -> FloatArray:
   """Interpolate a 1D depth distribution at point reprojections."""
-  # TODO: Use the camera intrinsics to infer a scale distribution.
-  # How to deal with lense distortion? local or globally-constant focal length?
   num_bins = score_scales.shape[-1]
   min_, max_ = depth_min_max
   depth = depth.clip(min_, max_)
@@ -165,10 +163,9 @@ def pool_multiview_features(
     var_ = jnp.sum(weights * (feats - mean_[..., None, :]) ** 2, axis=-2)
     mean_ = mean_.astype(feats.dtype)
     var_ = var_.astype(feats.dtype)
+  stats = [mean_]
   if use_variance:
-    stats = [mean_, var_]
-  else:
-    stats = [mean_]
+    stats.append(var_)
   if add_minmax:
     max_ = jnp.max(feats, axis=-2, where=valid_, initial=-jnp.inf)
     min_ = jnp.min(feats, axis=-2, where=valid_, initial=jnp.inf)

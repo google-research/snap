@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""ResNet implementation from Big Transfer:
+       Big Transfer (BiT): General Visual Representation Learning
+       A. Kolesnikov, L. Beyer, X. Zhai, J. Puigcerver, J. Yung, S. Gelly, N. Houlsby
+       ECCV 2020
+   Copied to support mixed-precision training.
+   https://github.com/google-research/big_vision/blob/main/big_vision/models/bit_paper.py
+"""
 import functools
 from typing import Optional, Sequence, Any, Dict
 

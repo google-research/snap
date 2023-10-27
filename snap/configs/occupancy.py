@@ -29,7 +29,7 @@ def get_config() -> config_dict.ConfigDict:
   with config.optimizer_configs.unlocked():
     config.optimizer_configs.freeze_params_reg_exp = r'scene_encoder/'
 
-  cities = defaults.DATA_SPLITS_CITIES['train2']
+  cities = defaults.DATA_SPLITS_CITIES['train']
   locations = ','.join(
       f'{c}-n14_streetside_sceneviewpair_20views_trekkerquery' for c in cities
   )

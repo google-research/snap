@@ -38,20 +38,9 @@ from snap.utils import geometry
 from snap.utils import misc
 
 CITIES_SPLITS = {
-    'train': [
-        'barcelona',
-        'manhattan',
-        'manila',
-        'paris',
-        'sanfrancisco',
-        'singapore',
-        'taiwan',
-    ],
-    'test': ['london', 'rio', 'sydney', 'tokyo1', 'brooklyn'],
-    'test2': ['osaka', 'amsterdam', 'mexico', 'melbourne', 'saopaulo'],
+    'train': default_configs.DATA_SPLITS_CITIES['train'],
+    'test': ['osaka', 'amsterdam', 'mexico', 'melbourne', 'saopaulo', 'seattles'],
 }
-CITIES_SPLITS['train2'] = CITIES_SPLITS['train'] + CITIES_SPLITS['test']
-CITIES_SPLITS['test3'] = CITIES_SPLITS['test2'] + ['seattle']
 
 ResultDict = dict[str, np.ndarray]
 
@@ -192,33 +181,6 @@ def get_model_and_dataset(
   config_model_default = model_class.default_flax_model_config()
   config.model = config_utils.configs_merge(config_model_default, config.model)
   config.model = config_utils.configs_merge(config.model, eval_config.model)
-  # TODO: Fix once the experiments are run again.
-  if 'bev_estimator' in config.model:
-    if config.model.bev_estimator.scene_encoder is not None:
-      config.model.bev_estimator.scene_encoder.pretrained_xid = None
-      config.model.bev_estimator.scene_encoder.pretrained_path = None
-      config.model.bev_estimator.scene_encoder.image_encoder.encoder.checkpoint_units = (
-          False
-      )
-    if config.model.bev_estimator.aerial_encoder is not None:
-      config.model.bev_estimator.aerial_encoder.encoder.checkpoint_units = False
-    if config.model.bev_estimator.semantic_encoder is not None:
-      config.model.bev_estimator.semantic_encoder.encoder.encoder.checkpoint_units = (
-          False
-      )
-    if config.model.bev_estimator.aerial_encoder is not None:
-      config.model.bev_estimator.aerial_encoder.encoder.checkpoint_units = False
-    if config.model.bev_estimator.semantic_encoder is not None:
-      config.model.bev_estimator.semantic_encoder.encoder.checkpoint_units = (
-          False
-      )
-  if config.model.get('bev_estimator_query') is not None:
-    config.model.bev_estimator_query.pretrained_xid = None
-    config.model.bev_estimator_query.scene_encoder.pretrained_xid = None
-    config.model.bev_estimator_query.scene_encoder.pretrained_path = None
-    config.model.bev_estimator_query.scene_encoder.image_encoder.encoder.checkpoint_units = (
-        False
-    )
   model = model_class(config.model, dataset.meta_data, dtype)
 
   state = pretrain_utils.restore_pretrained_checkpoint(

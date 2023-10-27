@@ -17,21 +17,10 @@ import enum
 from typing import Any, Iterable
 from ml_collections import config_dict
 
-DATA_DIR = (
-    'path_to_data'
-)
+DATA_DIR = 'path/to/data'
 
 DATA_SPLITS_CITIES = dict(
     train=[
-        'barcelona',
-        'manhattan',
-        'manila',
-        'paris',
-        'sanfrancisco',
-        'singapore',
-        'taiwan',
-    ],
-    train2=[
         # Europe
         'barcelona',
         'london',
@@ -321,7 +310,6 @@ def semantic_net() -> config_dict.ConfigDict:
               ('road', 0.446990),
               ('terrain', 0.085374),
               ('building', 0.204649),
-              # ('building', 0.087491),  # from lidar
           ),
           object_classes_exclusive=(
               'fence',
@@ -345,7 +333,6 @@ def semantic_net() -> config_dict.ConfigDict:
               ('fence', 0.006257),
               ('pole', 0.001172),
               ('tree', 0.001924),
-              # ('tree', 0.021205),  # from lidar
               ('traffic_sign', 0.000960),
               ('traffic_light', 0.000559),
               ('street_light', 0.000738),
@@ -369,8 +356,6 @@ def bev_localizer() -> config_dict.ConfigDict:
           num_pose_samples=config_dict.placeholder(int),
           num_pose_sampling_retries=1,
           query_frustum_depth=16.0,
-          query_grid_z_offset=config_dict.placeholder(float),  # deprecated
-          query_grid_z_range=config_dict.placeholder(tuple),  # deprecated
           filter_points_in_fov=False,
           threshold_remove_accurate_poses=config_dict.placeholder(tuple),
           do_grid_refinement=False,

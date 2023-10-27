@@ -31,7 +31,7 @@ def get_config() -> config_dict.ConfigDict:
       overwrite=False,
       data=config_dict.create(
           rng_seed=0,
-          split='test3',
+          split='test',
           name_pattern=(
               '{}-n14_streetside_sceneviewpair_20views_trekkerquery_eval'
           ),

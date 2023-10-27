@@ -116,7 +116,6 @@ def process_example(
     dtype: tf.dtypes.DType = tf.float32,
 ) -> DataDict:
   """Preprocesses one TF example."""
-  # TODO: Switch to match-case once b/270274562 is resolved.
   if config.mode == types.DataMode.SINGLE_SCENE:
     item = process_scene_example(example, config, dtype)
   elif config.mode == types.DataMode.PAIR_SCENES:
@@ -153,7 +152,6 @@ def process_batch(
     batch: DataDict, config: ml_collections.ConfigDict
 ) -> DataDict:
   """Process a jax batch."""
-  # TODO: Switch to match-case.
   if config.mode == types.DataMode.SINGLE_SCENE:
     batch = process_scene_batch(batch)
   elif config.mode == types.DataMode.PAIR_SCENES:
@@ -308,7 +306,6 @@ def dataset_iterator_from_builder(
 
   ds_iter = iter(ds)
   ds_iter = map(dataset_utils.tf_to_numpy, ds_iter)
-  # TODO: do we need padding if drop_remainder=True ?
   ds_iter = map(maybe_pad_batches, ds_iter)
   ds_iter = map(shard_batches, ds_iter)
   if process_batch_fn is not None:
@@ -360,7 +357,6 @@ def get_dataset(
         f' {dataset_configs.mode} vs {build_config.mode}'
     )
 
-  # TODO: maybe create these in a base dataset?
   example_fn = functools.partial(
       process_example, dtype=dtype, config=dataset_configs
   )
