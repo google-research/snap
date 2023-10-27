@@ -355,43 +355,6 @@ def semantic_net() -> config_dict.ConfigDict:
   ).lock()
 
 
-def bev_matcher() -> config_dict.ConfigDict:
-  return config_dict.ConfigDict(
-      dict(
-          bev_estimator=bev_estimator(),
-          matching_dim=32,
-          num_query_points=1000,
-          max_distance_negatives=config_dict.placeholder(float),
-          normalize_features=False,
-          add_confidence_query=False,
-          add_confidence_ref=False,
-          add_temperature=False,
-          init_temperature=2.0,
-      )
-  ).lock()
-
-
-def bev_aligner() -> config_dict.ConfigDict:
-  return config_dict.ConfigDict(
-      dict(
-          bev_estimator=bev_estimator(),
-          matching_dim=32,
-          normalize_features=False,
-          add_confidence_query=False,
-          add_confidence_ref=False,
-          mask_score_out_of_bounds=True,
-          clip_negative_scores=False,
-          add_temperature=False,
-          init_temperature=2.0,
-          query_point_selection='all',
-          num_query_points=config_dict.placeholder(int),
-          pose_selection='random',
-          num_pose_samples=config_dict.placeholder(int),
-          num_pose_sampling_retries=1,
-      )
-  ).lock()
-
-
 def bev_localizer() -> config_dict.ConfigDict:
   return config_dict.ConfigDict(
       dict(

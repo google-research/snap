@@ -25,8 +25,6 @@ BASEPATH = 'snap.models.{}'
 MODELS = {
     'occupancy_net': ('occupancy_net', 'OccupancyNetModel'),
     'semantic_net': ('semantic_net', 'SemanticNetModel'),
-    'bev_matcher': ('bev_matcher', 'BEVMatcherModel'),
-    'bev_aligner': ('bev_aligner', 'BEVAlignerModel'),
     'bev_localizer': ('bev_localizer', 'BEVLocalizerModel'),
 }
 
