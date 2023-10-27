@@ -78,7 +78,6 @@ def pose_scoring(
   )
   if mask_out_of_bounds:
     valid_points = valid_points & valid_j_points
-    # TODO: Renormalize the scores by valid_points/valid_j_points.
   score_pose = jnp.sum(valid_points * scores_points, axis=-1)
   return score_pose
 

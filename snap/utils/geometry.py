@@ -77,7 +77,6 @@ class Transform3D(dca.DataclassArray):  # pytype: disable=base-class-error
       self, other: Union[Points3D, 'Transform3D']
   ) -> Union[Points3D, 'Transform3D']:
     if isinstance(other, (jnp.ndarray, np.ndarray)):
-      # TODO: consider converting back to a numpy array.
       return self.transform(other)
     elif isinstance(other, Transform3D):
       return self.compose(other)
@@ -148,7 +147,6 @@ class Transform2D(dca.DataclassArray):  # pytype: disable=base-class-error
       self, other: Union[Points2D, 'Transform2D']
   ) -> Union[Points2D, 'Transform2D']:
     if isinstance(other, (jnp.ndarray, np.ndarray)):
-      # TODO: consider converting back to a numpy array.
       return self.transform(other)
     elif isinstance(other, Transform2D):
       return self.compose(other)

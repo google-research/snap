@@ -23,8 +23,6 @@ import functools
 from typing import Optional, Sequence, Any, Dict
 
 from absl import logging
-from big_vision.models import bit
-from big_vision.models import bit_paper
 from etils.array_types import FloatArray
 import flax.linen as nn
 import jax.numpy as jnp
@@ -157,6 +155,18 @@ class ResNetStage(nn.Module):
     return x, out
 
 
+def get_block_desc(depth):
+  if isinstance(depth, list):  # Be robust to silly mistakes.
+    depth = tuple(depth)
+  return {
+      26: [2, 2, 2, 2],  # From timm, gets ~75% on ImageNet.
+      50: [3, 4, 6, 3],
+      101: [3, 4, 23, 3],
+      152: [3, 8, 36, 3],
+      200: [3, 24, 36, 3]
+  }.get(depth, depth)
+
+
 class ResNetV2(nn.Module):
   """BiT variant."""
 
@@ -164,7 +174,7 @@ class ResNetV2(nn.Module):
   dtype: jnp.dtype = jnp.float32
 
   def __post_init__(self):
-    self.blocks = bit.get_block_desc(self.config.depth)
+    self.blocks = get_block_desc(self.config.depth)
     if self.config.limit_num_blocks is not None:
       self.blocks = self.blocks[: self.config.limit_num_blocks]
     self.level_names = [f'stage{i + 1}' for i in range(len(self.blocks))]
@@ -218,5 +228,6 @@ class ResNetV2(nn.Module):
         self.__class__.__name__,
         self.config.pretrained_path,
     )
+    from big_vision.models import bit_paper
     params = bit_paper.u.load_params(None, self.config.pretrained_path)
     return {'params': params}

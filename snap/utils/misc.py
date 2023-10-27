@@ -15,7 +15,6 @@
 """Various convenience functions."""
 
 from typing import Any, Callable, Iterable
-# TODO: look into using jaxtyping for type annotation and checking.
 
 import flax
 import jax

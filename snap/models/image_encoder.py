@@ -88,7 +88,6 @@ class FPNDecoder(nn.Module):
         assert f.shape[-3] == f_prev.shape[-3] * 2, "Image heights don't match."
         assert f.shape[-2] == f_prev.shape[-2] * 2, "Image widths don't match."
         f_prev = jax.image.resize(f_prev, new_shape, 'bilinear')
-        # TODO: Try an alternative with concat + projection conv.
         f = f + f_prev
       f_prev = f
       out_features.append(f)

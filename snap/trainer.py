@@ -99,7 +99,6 @@ def update_pretrained_variables(
     return variables
 
   variables = flax.traverse_util.flatten_dict(variables)
-  # TODO: reject keys with an incorrect shape.
   keys_unused = pretrained.keys() - variables.keys()
   keys_update = pretrained.keys() & variables.keys()
   if keys_unused:
@@ -209,7 +208,6 @@ def train_step(
 
   def training_loss_fn(params):
     variables = {'params': params, **train_state.model_state}
-    # TODO: Write singe-example models and vmap over batches.
     pred, new_model_state = flax_model.apply(
         variables,
         batch,
