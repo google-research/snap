@@ -86,11 +86,11 @@ class ProcessingConfig(tfds.core.BuilderConfig):
   evaluation_max_num_examples: Optional[int] = None
 
   scene_types: Tuple[str, ...] = ('OUTDOOR',)
-  vehicle_types: Tuple[str, ...] = ('CAR',)  # 'TREKKER', 'TROLLEY'
-  vehicle_types_for_map: Optional[Tuple[str, ...]] = None
+  vehicle_types: Tuple[str, ...] = ('CAR', 'TREKKER')
+  vehicle_types_for_map: Optional[Tuple[str, ...]] = ('CAR',)
   bin_level: int = 18
 
-  single_segment_per_scene: bool = False
+  single_segment_per_scene: bool = True
   min_num_runs_per_scene: int = 2
   min_num_segments_per_vehicle: int = 1
   scene_config: SceneConfig = dataclasses.field(default_factory=SceneConfig)

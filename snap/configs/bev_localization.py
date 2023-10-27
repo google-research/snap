@@ -27,7 +27,7 @@ def get_config(args_str: None | str = None) -> config_dict.ConfigDict:
   config.model.num_pose_samples = 10_000
   # This improves the training metrics but it's not clear yet whether this also
   # improves the evaluation results.
-  # config.model.num_pose_sampling_retries = 8
+  config.model.num_pose_sampling_retries = 8
 
   args = defaults.parse_argument_string(args_str)
   image_encoder = defaults.resnet(args['image_encoder'])

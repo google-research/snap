@@ -244,7 +244,7 @@ def bev_mapper(
       dict(
           streetview_encoder=config_dict.placeholder(config_dict.ConfigDict),
           scene_z_offset=4.0,
-          scene_z_offset_range=config_dict.placeholder(tuple),
+          scene_z_offset_range=(-2,2),
           scene_z_height=12.0,
           pooling=vertical_pooling(),
           aerial_encoder=config_dict.placeholder(config_dict.ConfigDict),
