@@ -25,7 +25,7 @@ import ml_collections
 import snap.configs.defaults as default_configs
 from snap.data import types as data_types
 from snap.models import base
-from snap.models import bev_estimator
+from snap.models import bev_mapper
 from snap.models import layers
 from snap.models import pose_estimation
 from snap.models import types
@@ -75,12 +75,12 @@ class BEVLocalizer(nn.Module):
     if self.config.get('query_grid_z_offset') is not None:
       logging.warning(
           'query_grid_z_offset is deprecated, adjust'
-          ' bev_estimator.scene_z_offset instead.'
+          ' bev_mapper.scene_z_offset instead.'
       )
     if self.config.get('query_grid_z_range') is not None:
       logging.warning(
           'query_grid_z_range is deprecated, adjust'
-          ' bev_estimator.scene_z_offset_range instead.'
+          ' bev_mapper.scene_z_offset_range instead.'
       )
     super().__post_init__()
 
@@ -88,17 +88,17 @@ class BEVLocalizer(nn.Module):
     if self.config.add_confidence_map:
       raise NotImplementedError('Map confidence is not yet supported.')
     if self.config.add_confidence_query or self.config.add_confidence_map:
-      self.config.bev_estimator.add_confidence = True
-    self.bev_estimator = bev_estimator.BEVEstimator(
-        self.config.bev_estimator,
+      self.config.bev_mapper.add_confidence = True
+    self.bev_mapper = bev_mapper.BEVMapper(
+        self.config.bev_mapper,
         self.grid_map,
         self.semantic_map_classes,
         self.dtype,
     )
-    self.bev_estimator_query = None
-    if self.config.bev_estimator_query is not None:
-      self.bev_estimator_query = bev_estimator.BEVEstimator(
-          self.config.bev_estimator_query,
+    self.bev_mapper_query = None
+    if self.config.bev_mapper_query is not None:
+      self.bev_mapper_query = bev_mapper.BEVMapper(
+          self.config.bev_mapper_query,
           self.grid_map,
           self.semantic_map_classes,
           self.dtype,
@@ -134,8 +134,8 @@ class BEVLocalizer(nn.Module):
     q_xy_p = self.q_xy_p[None].repeat(batch_size, axis=0)
 
     pred = {}
-    pred['map'] = self.bev_estimator(data['map'], train, debug)
-    pred['query'] = (self.bev_estimator_query or self.bev_estimator)(
+    pred['map'] = self.bev_mapper(data['map'], train, debug)
+    pred['query'] = (self.bev_mapper_query or self.bev_mapper)(
         data['query'] | dict(xy_bev=q_xy_p),
         train,
         debug,

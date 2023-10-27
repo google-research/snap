@@ -236,10 +236,10 @@ def vertical_pooling() -> config_dict.ConfigDict:
   ).lock()
 
 
-def bev_estimator(
+def bev_mapper(
     modalities: Iterable[str] = (MapModalities.STREETVIEW,)
 ) -> config_dict.ConfigDict:
-  """Config for the multi-modal BEV estimator."""
+  """Config for the multi-modal BEV mapper."""
   config = config_dict.ConfigDict(
       dict(
           streetview_encoder=config_dict.placeholder(config_dict.ConfigDict),
@@ -288,7 +288,7 @@ def occupancy_net() -> config_dict.ConfigDict:
 def semantic_net() -> config_dict.ConfigDict:
   return config_dict.ConfigDict(
       dict(
-          bev_estimator=bev_estimator(),
+          bev_mapper=bev_mapper(),
           decoder_type='mlp',
           decoder_dim=128,
           mlp_num_layers=2,
@@ -345,8 +345,8 @@ def semantic_net() -> config_dict.ConfigDict:
 def bev_localizer() -> config_dict.ConfigDict:
   return config_dict.ConfigDict(
       dict(
-          bev_estimator=bev_estimator(),
-          bev_estimator_query=config_dict.placeholder(config_dict.ConfigDict),
+          bev_mapper=bev_mapper(),
+          bev_mapper_query=config_dict.placeholder(config_dict.ConfigDict),
           add_confidence_query=False,
           add_confidence_map=False,
           mask_score_out_of_bounds=False,

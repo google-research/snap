@@ -190,7 +190,7 @@ class StreetViewEncoder(nn.Module):
       pretrained_config, workdir = xm_utils.get_info_from_xmanager(xid, 1)
       self.config = config_utils.configs_merge(
           self.config,
-          pretrained_config.model.bev_estimator.streetview_encoder,
+          pretrained_config.model.bev_mapper.streetview_encoder,
       )
       self.config.pretrained_path = workdir
     super().__post_init__()

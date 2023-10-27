@@ -89,7 +89,7 @@ class VerticalPooling(nn.Module):
     return pred
 
 
-class BEVEstimator(nn.Module):
+class BEVMapper(nn.Module):
   """Encode a set of images into a 2D feature plane."""
 
   config: ml_collections.ConfigDict
@@ -100,7 +100,7 @@ class BEVEstimator(nn.Module):
   def __post_init__(self):
     if (xid := self.config.pretrained_xid) is not None:
       pretrained_config, workdir = xm_utils.get_info_from_xmanager(xid, 1)
-      pretrained_config = pretrained_config.model.bev_estimator
+      pretrained_config = pretrained_config.model.bev_mapper
       diff = config_utils.config_diff(self.config, pretrained_config)
       if diff:
         logging.warning(
@@ -299,13 +299,13 @@ class BEVEstimator(nn.Module):
   @classmethod
   @property
   def default_config(cls) -> ml_collections.ConfigDict:
-    return default_configs.bev_estimator()
+    return default_configs.bev_mapper()
 
   def load_pretrained_variables(self) -> None | dict[str, Any]:
     if (path := self.config.pretrained_path) is None:
       return
     state = checkpoints.restore_checkpoint(path, None)
-    params = misc.find_nested_dict(state['params'], 'bev_estimator')
+    params = misc.find_nested_dict(state['params'], 'bev_mapper')
     if params is None:
       raise ValueError(f'No parameters for {self.__class__.__name__} in {path}')
     logging.info(

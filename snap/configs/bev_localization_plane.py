@@ -21,13 +21,13 @@ from snap.configs import bev_localization
 def get_config(args_str: None | str = None) -> config_dict.ConfigDict:
   """Return the config."""
   config = bev_localization.get_config(args_str)
-  bev_estimators = [config.model.bev_estimator]
-  if config.model.bev_estimator_query is not None:
-    bev_estimators.append(config.model.bev_estimator_query)
-  for estimator in bev_estimators:
+  bev_mappers = [config.model.bev_mapper]
+  if config.model.bev_mapper_query is not None:
+    bev_mappers.append(config.model.bev_mapper_query)
+  for mapper in bev_mappers:
     # A single height plane 2.5 meters below the cameras.
-    estimator.scene_z_offset = 2.5 + config.data.voxel_size / 2
-    estimator.scene_z_height = config.data.voxel_size
-    if estimator.streetview_encoder is not None:
-      estimator.streetview_encoder.do_weighted_fusion = False
+    mapper.scene_z_offset = 2.5 + config.data.voxel_size / 2
+    mapper.scene_z_height = config.data.voxel_size
+    if mapper.streetview_encoder is not None:
+      mapper.streetview_encoder.do_weighted_fusion = False
   return config

@@ -28,7 +28,7 @@ import optax
 
 import snap.configs.defaults as default_configs
 from snap.models import base
-from snap.models import bev_estimator
+from snap.models import bev_mapper
 from snap.models import layers
 from snap.models import resnet
 from snap.models import types
@@ -128,8 +128,8 @@ class SemanticNet(nn.Module):
   dtype: jnp.dtype = jnp.float32
 
   def setup(self):
-    self.bev_estimator = bev_estimator.BEVEstimator(
-        config=self.config.bev_estimator,
+    self.bev_mapper = bev_mapper.BEVMapper(
+        config=self.config.bev_mapper,
         grid=self.grid,
         dtype=self.dtype,
     )
@@ -169,7 +169,7 @@ class SemanticNet(nn.Module):
   ) -> base.Predictions:
     if 'map' in data:
       data = data['map']
-    pred = self.bev_estimator(data, train)
+    pred = self.bev_mapper(data, train)
     neural_map = pred['bev_features']
 
     flips = None
