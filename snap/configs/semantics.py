@@ -34,7 +34,6 @@ def get_config(args_str: None | str = None) -> config_dict.ConfigDict:
   image_encoder = defaults.resnet(args['image_encoder'])
   config.model.bev_mapper.streetview_encoder.image_encoder.encoder = image_encoder
 
-  config.model.bev_mapper.pretrained_xid = None
   with config.optimizer_configs.unlocked():
     config.optimizer_configs.freeze_params_reg_exp = r'bev_mapper/'
 

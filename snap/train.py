@@ -28,6 +28,7 @@ from scenic.train_lib import train_utils
 
 from snap import models
 from snap import trainer
+from snap.utils import configs as config_utils
 
 os.environ['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.9'
 flax.config.update('flax_use_orbax_checkpointing', False)
@@ -41,6 +42,7 @@ def main(
     writer: metric_writers.MetricWriter,
 ) -> None:
   """Main function for Scenic."""
+  config_utils.config_save(workdir, config)
 
   model_cls = models.get_model(config.model_name)
   data_rng, rng = jax.random.split(rng)

@@ -24,7 +24,6 @@ from flax.training import checkpoints
 import jax
 import jax.numpy as jnp
 import ml_collections
-from scenic.google.xm import xm_utils
 
 import snap.configs.defaults as default_configs
 from snap.models import base
@@ -98,8 +97,8 @@ class BEVMapper(nn.Module):
   dtype: jnp.dtype = jnp.float32
 
   def __post_init__(self):
-    if (xid := self.config.pretrained_xid) is not None:
-      pretrained_config, workdir = xm_utils.get_info_from_xmanager(xid, 1)
+    if (workdir := self.config.pretrained_path) is not None:
+      pretrained_config = config_utils.config.load(workdir)
       pretrained_config = pretrained_config.model.bev_mapper
       diff = config_utils.config_diff(self.config, pretrained_config)
       if diff:

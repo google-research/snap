@@ -218,7 +218,6 @@ def streetview_encoder() -> config_dict.ConfigDict:
           fusion_add_minmax=False,
           fusion_use_variance=True,
           max_view_distance=config_dict.placeholder(float),
-          pretrained_xid=config_dict.placeholder(int),
           pretrained_path=config_dict.placeholder(str),
       )
   ).lock()
@@ -255,7 +254,6 @@ def bev_mapper(
           normalize_matching_features=True,
           add_confidence=False,
           apply_modality_dropout=True,
-          pretrained_xid=config_dict.placeholder(int),
           pretrained_path=config_dict.placeholder(str),
       )
   )

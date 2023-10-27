@@ -25,7 +25,6 @@ def get_config() -> config_dict.ConfigDict:
   config.model = defaults.occupancy_net()
   config.model.occupancy_mlp.layers = (128, 256, 1)
 
-  config.model.streetview_encoder.pretrained_xid = None
   with config.optimizer_configs.unlocked():
     config.optimizer_configs.freeze_params_reg_exp = r'streetview_encoder/'
 

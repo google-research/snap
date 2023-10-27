@@ -21,8 +21,7 @@ from snap.configs import defaults
 def get_config() -> config_dict.ConfigDict:
   """Return the config."""
   config = config_dict.create(
-      xid=config_dict.placeholder(int),
-      wid=1,
+      workdir=config_dict.placeholder(str),
       checkpoint_step=config_dict.placeholder(int),
       batch_size=4,
       rng_seed=0,

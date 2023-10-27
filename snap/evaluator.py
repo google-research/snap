@@ -216,7 +216,7 @@ def write_eval_dump(
   else:
     np.savez(io_buffer, **results)
   (eval_dir / 'results.npz').write_bytes(io_buffer.getvalue())
-  (eval_dir / 'config.json').write_text(config.to_json())
+  config_utils.config_save(eval_dir, config)
 
 
 def read_eval_dump(
@@ -225,8 +225,7 @@ def read_eval_dump(
   """Read from an evaluation directory."""
   results = eval_dir / 'results.npz'
   results = dict(np.load(io.BytesIO(results.read_bytes()), allow_pickle=False))
-  config = eval_dir / 'config.json'
-  config = config_dict.ConfigDict(json.loads(config.read_text()))
+  config = config_utils.config_load(eval_dir)
   return results, config
 
 
@@ -245,21 +244,19 @@ def run_for_location(
     fail_if_missing: bool = False,
 ) -> tuple[ResultDict, config_dict.ConfigDict]:
   """Run the evaluation on one location."""
-  experiment_config, workdir = xm_utils.get_info_from_xmanager(
-      eval_config.xid, eval_config.wid
-  )
-  workdir = Path(workdir)
+  workdir = Path(eval_config.workdir)
+  experiment_config = config_utils.config_load(workdir)
   eval_path = workdir / 'evaluation' / f'{location}{eval_config.tag}'
   if eval_path.exists() and not eval_config.overwrite:
     logging.info(
         'Loading dump for experiment %d from path %s.',
-        eval_config.xid,
+        workdir,
         eval_path,
     )
     results, config = read_eval_dump(eval_path)
   elif fail_if_missing:
     raise ValueError(
-        f'Missing dump for experiment {eval_config.xid}, '
+        f'Missing dump for experiment {workdir}, '
         f'expected at path {eval_path}'
     )
   else:

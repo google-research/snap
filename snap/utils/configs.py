@@ -15,7 +15,9 @@
 """Utilities related to managing experiment configurations."""
 import copy
 from typing import Any
+from etils.epath import Path
 from ml_collections import config_dict
+import yaml
 
 
 def config_update(self: config_dict.ConfigDict, other: config_dict.ConfigDict):
@@ -74,3 +76,14 @@ def config_diff(
     else:
       diff[key] = (va, vb)
   return diff
+
+
+def config_load(workdir: str) -> config_dict.ConfigDict:
+  path = Path(workdir) / 'config.yaml'
+  return config_dict.ConfigDict(yaml.unsafe_load(path.read_text()))
+
+
+def config_save(workdir: str, config: config_dict.ConfigDict):
+  workdir = Path(workdir)
+  workdir.mkdir(parents=True, exist_ok=True)
+  (workdir / 'config.yaml').write_text(config.to_yaml())

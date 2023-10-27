@@ -27,7 +27,6 @@ from flax.training import checkpoints
 import jax
 import jax.numpy as jnp
 import ml_collections
-from scenic.google.xm import xm_utils
 
 import snap.configs.defaults as default_configs
 from snap.models import base
@@ -186,13 +185,12 @@ class StreetViewEncoder(nn.Module):
   dtype: jnp.dtype = jnp.float32
 
   def __post_init__(self):
-    if (xid := self.config.pretrained_xid) is not None:
-      pretrained_config, workdir = xm_utils.get_info_from_xmanager(xid, 1)
+    if (workdir := self.config.pretrained_path) is not None:
+      pretrained_config = config_utils.config.load(workdir)
       self.config = config_utils.configs_merge(
           self.config,
           pretrained_config.model.bev_mapper.streetview_encoder,
       )
-      self.config.pretrained_path = workdir
     super().__post_init__()
 
   def setup(self):
