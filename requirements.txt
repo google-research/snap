@@ -1,0 +1,11 @@
+pyyaml
+jax
+flax
+absl-py
+optax
+tensorflow-datasets
+etils[epath,array-types]
+dataclass_array
+ml_collections @ git+https://github.com/google/ml_collections.git
+scenic @ git+https://github.com/google-research/scenic.git
+clu @ https://github.com/google/CommonLoopUtils.git
