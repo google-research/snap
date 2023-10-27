@@ -271,6 +271,7 @@ def run_for_location(
         eval_config.batch_size,
     )
     write_eval_dump(eval_path, results, config)
+    logging.info('Evaluation results written to %s.', eval_path)
   return results, config
 
 
