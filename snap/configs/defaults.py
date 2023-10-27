@@ -52,7 +52,7 @@ def parse_argument_string(args_str: None | str) -> dict[str, Any]:
   args = dict(kv.split('=') for kv in (args_str or '').split(',') if kv)
   default_args = dict(
       image_encoder='R50',
-      modalities='streetview',
+      modalities='streetview+aerial',
   )
   if unknown_args := (set(args) - set(default_args)):
     raise ValueError(f'Unknown args: {unknown_args}')
@@ -236,7 +236,7 @@ def vertical_pooling() -> config_dict.ConfigDict:
 
 
 def bev_mapper(
-    modalities: Iterable[str] = (MapModalities.STREETVIEW,)
+    modalities: Iterable[str] = (MapModalities.STREETVIEW, MapModalities.AERIAL)
 ) -> config_dict.ConfigDict:
   """Config for the multi-modal BEV mapper."""
   config = config_dict.ConfigDict(
