@@ -198,7 +198,7 @@ def semantic_raster_encoder() -> config_dict.ConfigDict:
   return config_dict.ConfigDict(dict(encoder=encoder, embedding_dim=8)).lock()
 
 
-def image_scene_encoder() -> config_dict.ConfigDict:
+def streetview_encoder() -> config_dict.ConfigDict:
   feature_dim = 128
   fusion = mlp()
   fusion.layers = (feature_dim * 2, feature_dim)
@@ -242,7 +242,7 @@ def bev_estimator(
   """Config for the multi-modal BEV estimator."""
   config = config_dict.ConfigDict(
       dict(
-          scene_encoder=config_dict.placeholder(config_dict.ConfigDict),
+          streetview_encoder=config_dict.placeholder(config_dict.ConfigDict),
           scene_z_offset=4.0,
           scene_z_offset_range=config_dict.placeholder(tuple),
           scene_z_height=12.0,
@@ -262,7 +262,7 @@ def bev_estimator(
   for m in modalities:
     match m:
       case MapModalities.STREETVIEW:
-        config.scene_encoder = image_scene_encoder()
+        config.streetview_encoder = streetview_encoder()
       case MapModalities.AERIAL:
         config.aerial_encoder = aerial_encoder()
       case MapModalities.SEMANTIC:
@@ -279,7 +279,7 @@ def occupancy_net() -> config_dict.ConfigDict:
       dict(
           num_samples_per_ray=100,
           ray_margin=0.2,
-          scene_encoder=image_scene_encoder(),
+          streetview_encoder=streetview_encoder(),
           occupancy_mlp=predictor,
       )
   ).lock()

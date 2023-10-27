@@ -28,11 +28,11 @@ def get_config(args_str: None | str = None) -> config_dict.ConfigDict:
   config.model.decoder_dim = 256
   config.model.decoder_type = 'resnet_stage'
   config.model.resnet_num_units = 2
-  config.model.bev_estimator.scene_encoder.max_view_distance = 20
+  config.model.bev_estimator.streetview_encoder.max_view_distance = 20
 
   args = defaults.parse_argument_string(args_str)
   image_encoder = defaults.resnet(args['image_encoder'])
-  config.model.bev_estimator.scene_encoder.image_encoder.encoder = image_encoder
+  config.model.bev_estimator.streetview_encoder.image_encoder.encoder = image_encoder
 
   config.model.bev_estimator.pretrained_xid = None
   with config.optimizer_configs.unlocked():

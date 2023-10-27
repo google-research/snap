@@ -29,7 +29,7 @@ from scenic.google.xm import xm_utils
 import snap.configs.defaults as default_configs
 from snap.models import base
 from snap.models import image_encoder
-from snap.models import image_scene_encoder
+from snap.models import streetview_encoder
 from snap.models import layers
 from snap.models import semantic_raster_encoder
 from snap.models import types
@@ -111,13 +111,13 @@ class BEVEstimator(nn.Module):
 
   def setup(self):
     feature_dimensions = []
-    self.scene_encoder = self.aerial_encoder = self.semantic_encoder = None
-    if self.config.scene_encoder is not None:
-      self.scene_encoder = image_scene_encoder.ImageSceneEncoder(
-          self.config.scene_encoder, self.dtype
+    self.streetview_encoder = self.aerial_encoder = self.semantic_encoder = None
+    if self.config.streetview_encoder is not None:
+      self.streetview_encoder = streetview_encoder.StreetViewEncoder(
+          self.config.streetview_encoder, self.dtype
       )
       self.vertical_pooling = VerticalPooling(self.config.pooling, self.dtype)
-      feature_dimensions.append(self.config.scene_encoder.feature_dim)
+      feature_dimensions.append(self.config.streetview_encoder.feature_dim)
     if self.config.aerial_encoder is not None:
       self.aerial_encoder = image_encoder.ImageEncoder(
           self.config.aerial_encoder, self.dtype
@@ -196,7 +196,7 @@ class BEVEstimator(nn.Module):
       )
       data['xyz_query'] = jnp.concatenate([xy, z[..., :1]], axis=-1)
 
-    pred = self.scene_encoder(data, train=train)
+    pred = self.streetview_encoder(data, train=train)
     pred['vertical_pooling'] = self.vertical_pooling(pred['feature_volume'])
     pred['feature_plane'] = pred['vertical_pooling'].pop('plane')
     return pred
@@ -262,7 +262,7 @@ class BEVEstimator(nn.Module):
     pred = {}
     # Run inference for each modality.
     feature_planes = []
-    if self.scene_encoder is not None:
+    if self.streetview_encoder is not None:
       pred['streetview'] = self.encode_streetview(
           data, train=train, is_query=is_query
       )

@@ -36,17 +36,17 @@ def get_config(args_str: None | str = None) -> config_dict.ConfigDict:
   config.model.bev_estimator = defaults.bev_estimator(map_modalities)
 
   if defaults.MapModalities.STREETVIEW in map_modalities:
-    config.model.bev_estimator.scene_encoder.image_encoder.encoder = (
+    config.model.bev_estimator.streetview_encoder.image_encoder.encoder = (
         image_encoder
     )
   else:
     estimator_query = defaults.bev_estimator(
         modalities=(defaults.MapModalities.STREETVIEW,)
     )
-    estimator_query.scene_encoder.image_encoder.encoder = image_encoder
+    estimator_query.streetview_encoder.image_encoder.encoder = image_encoder
     # Make the fusion MLP a bit deeper
-    dim = estimator_query.scene_encoder.feature_dim
-    estimator_query.scene_encoder.fusion.layers = (dim * 2, dim * 2, dim)
+    dim = estimator_query.streetview_encoder.feature_dim
+    estimator_query.streetview_encoder.fusion.layers = (dim * 2, dim * 2, dim)
     config.model.bev_estimator_query = estimator_query
 
   cities = defaults.DATA_SPLITS_CITIES['train']

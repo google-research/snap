@@ -28,6 +28,6 @@ def get_config(args_str: None | str = None) -> config_dict.ConfigDict:
     # A single height plane 2.5 meters below the cameras.
     estimator.scene_z_offset = 2.5 + config.data.voxel_size / 2
     estimator.scene_z_height = config.data.voxel_size
-    if estimator.scene_encoder is not None:
-      estimator.scene_encoder.do_weighted_fusion = False
+    if estimator.streetview_encoder is not None:
+      estimator.streetview_encoder.do_weighted_fusion = False
   return config

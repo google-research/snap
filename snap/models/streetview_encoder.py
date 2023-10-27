@@ -179,7 +179,7 @@ def pool_multiview_features(
   return stats, valid_any
 
 
-class ImageSceneEncoder(nn.Module):
+class StreetViewEncoder(nn.Module):
   """Encode a set of images into a 3D feature grid."""
 
   config: ml_collections.ConfigDict
@@ -190,7 +190,7 @@ class ImageSceneEncoder(nn.Module):
       pretrained_config, workdir = xm_utils.get_info_from_xmanager(xid, 1)
       self.config = config_utils.configs_merge(
           self.config,
-          pretrained_config.model.bev_estimator.scene_encoder,
+          pretrained_config.model.bev_estimator.streetview_encoder,
       )
       self.config.pretrained_path = workdir
     super().__post_init__()
@@ -291,13 +291,13 @@ class ImageSceneEncoder(nn.Module):
   @classmethod
   @property
   def default_config(cls) -> ml_collections.ConfigDict:
-    return default_configs.image_scene_encoder()
+    return default_configs.streetview_encoder()
 
   def load_pretrained_variables(self) -> None | dict[str, Any]:
     if (path := self.config.pretrained_path) is None:
       return
     state = checkpoints.restore_checkpoint(path, None)
-    params = misc.find_nested_dict(state['params'], 'scene_encoder')
+    params = misc.find_nested_dict(state['params'], 'streetview_encoder')
     if params is None:
       raise ValueError(f'No parameters for {self.__class__.__name__} in {path}')
     logging.info(

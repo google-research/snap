@@ -25,7 +25,7 @@ import ml_collections
 
 import snap.configs.defaults as default_configs
 from snap.models import base
-from snap.models import image_scene_encoder
+from snap.models import streetview_encoder
 from snap.models import layers
 from snap.models import types
 from snap.utils import grids
@@ -71,8 +71,8 @@ class OccupancyNet(nn.Module):
   dtype: jnp.dtype = jnp.float32
 
   def setup(self):
-    self.scene_encoder = image_scene_encoder.ImageSceneEncoder(
-        self.config.scene_encoder, self.dtype
+    self.streetview_encoder = streetview_encoder.SteetViewEncoder(
+        self.config.streetview_encoder, self.dtype
     )
     self.mlp_out = layers.MLP(self.config.occupancy_mlp, self.dtype)
 
@@ -83,7 +83,7 @@ class OccupancyNet(nn.Module):
       data = data['map']
     xyz_grid = self.grid.index_to_xyz(self.grid.grid_index())
     xyz_grid = xyz_grid[None].repeat(len(data['images']), axis=0)  # Add batch.
-    pred = self.scene_encoder(data | dict(xyz_query=xyz_grid), train)
+    pred = self.streetview_encoder(data | dict(xyz_query=xyz_grid), train)
     volume = pred['feature_volume']
 
     queries = data.get('occupancy_queries')
