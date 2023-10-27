@@ -29,9 +29,6 @@ from scenic.train_lib import train_utils
 from snap import models
 from snap import trainer
 
-# register the dataset to scenic
-import snap.data.loader  # pylint: disable=unused-import
-
 os.environ['XLA_PYTHON_CLIENT_MEM_FRACTION'] = '0.9'
 flax.config.update('flax_use_orbax_checkpointing', False)
 FLAGS = flags.FLAGS
