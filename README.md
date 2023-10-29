@@ -38,12 +38,12 @@ The project requires Python >= 3.10 and is based on [Jax](https://github.com/goo
 ```bash
 python -m snap.train --config=snap/configs/train_localization.py \
     --config.batch_size=32 \
-    --workdir=train_snap_sv+aerial \
+    --workdir=train_snap_sv+aerial
 ```
 - Evaluate SNAP for visual positioning:
 ```bash
 python -m snap.evaluate --config=snap/configs/eval_localization.py \
-    --config.workdir=train_snap_sv+aerial
+    --config.workdir=train_snap_sv+aerial \
     --workdir=.  # unused
 ```
 - Fine-tune SNAP for semantic mapping:
@@ -51,12 +51,12 @@ python -m snap.evaluate --config=snap/configs/eval_localization.py \
 python -m snap.train --config=snap/configs/train_semantics.py \
     --config.batch_size=32 \
     --config.model.bev_mapper.pretrained_path=train_snap_sv+aerial \
-    --workdir=train_snap_sv+aerial_semantics \
+    --workdir=train_snap_sv+aerial_semantics
 ```
 - Evaluate the semantic mapping:
 ```bash
 python -m snap.evaluate --config=snap/configs/eval_semantics.py \
-    --config.workdir=train_snap_sv+aerial_semantics
+    --config.workdir=train_snap_sv+aerial_semantics \
     --workdir=.  # unused
 ```
 
