@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center"><ins>SNAP</ins><br>Self-Supervised Neural Maps<br>for Visual Positioning and Semantic Understanding</h1>
+  <h1 align="center">SNAP!<br><ins>S</ins>elf-Supervised <ins>N</ins>eural M<ins>ap</ins>s<br>for Visual Positioning and Semantic Understanding</h1>
   <p align="center">
     <a href="https://psarlin.com/">Paul-Edouard&nbsp;Sarlin</a>
     ·
@@ -13,6 +13,8 @@
   </p>
   <h2 align="center">
     <a href="https://arxiv.org/pdf/2306.05407.pdf" align="center">NeurIPS 2023 Paper</a>
+    | <a href="https://youtu.be/xogrwdgNQdo" align="center">Video</a>
+    | <a href="https://psarlin.com/doc/SNAP_NeurIPS2023_poster_compressed.pdf" align="center">Poster</a>
   </h2>
   
 </p>
